@@ -88,4 +88,33 @@ void floyd_warshall() {
         }
     }
 }
+void load_routes() {
+    FILE *fp = fopen("routes.txt", "r");
+    if (fp == NULL) {
+        initialize_distances();
+
+        num_cities = 3;
+        strcpy(cities[0], "Colombo");
+        strcpy(cities[1], "Kandy");
+        strcpy(cities[2], "Galle");
+        distance[0][1] = distance[1][0] = 120;
+        distance[0][2] = distance[2][0] = 115;
+        distance[1][2] = distance[2][1] = 230;
+        printf("Loaded default cities and distances.\n");
+        return;
+    }
+    initialize_distances();
+    fscanf(fp, "%d", &num_cities);
+    for (int i = 0; i < num_cities; i++) {
+        fscanf(fp, "%s", cities[i]);
+    }
+    for (int i = 0; i < num_cities; i++) {
+        for (int j = 0; j < num_cities; j++) {
+            fscanf(fp, "%d", &distance[i][j]);
+        }
+    }
+    fclose(fp);
+    printf("Loaded routes from file.\n");
+}
+
 
