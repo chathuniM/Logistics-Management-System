@@ -37,7 +37,6 @@ struct Delivery {
     float time;
 };
 
-
 char cities[MAX_CITIES][50];
 int num_cities = 0;
 int distance[MAX_CITIES][MAX_CITIES];
