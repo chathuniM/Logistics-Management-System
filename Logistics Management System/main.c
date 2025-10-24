@@ -213,4 +213,33 @@ void rename_city() {
     strcpy(cities[index], new_name);
     printf("City renamed.\n");
 }
+void remove_city() {
+    printf("Enter city name to remove: ");
+    char name[50];
+    fgets(name, 50, stdin);
+    name[strcspn(name, "\n")] = 0;
+    int index = find_city_index(name);
+    if (index == -1) {
+        printf("City not found.\n");
+        return;
+    }
+    for (int i = index; i < num_cities - 1; i++) {
+        strcpy(cities[i], cities[i + 1]);
+        for (int j = 0; j < num_cities; j++) {
+            distance[i][j] = distance[i + 1][j];
+            distance[j][i] = distance[j][i + 1];
+        }
+    }
+    num_cities--;
+    floyd_warshall();
+    printf("City removed.\n");
+}
+
+int find_city_index(char* name) {
+    for (int i = 0; i < num_cities; i++) {
+        if (strcmp(cities[i], name) == 0) return i;
+    }
+    return -1;
+}
+
 
