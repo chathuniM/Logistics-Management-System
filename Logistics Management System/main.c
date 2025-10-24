@@ -117,4 +117,52 @@ void load_routes() {
     printf("Loaded routes from file.\n");
 }
 
+void save_routes() {
+    FILE *fp = fopen("routes.txt", "w");
+    if (fp == NULL) {
+        printf("Error saving routes.\n");
+        return;
+    }
+    fprintf(fp, "%d\n", num_cities);
+    for (int i = 0; i < num_cities; i++) {
+        fprintf(fp, "%s\n", cities[i]);
+    }
+    for (int i = 0; i < num_cities; i++) {
+        for (int j = 0; j < num_cities; j++) {
+            fprintf(fp, "%d ", distance[i][j]);
+        }
+        fprintf(fp, "\n");
+    }
+    fclose(fp);
+    printf("Routes saved successfully.\n");
+}
+void load_deliveries() {
+    FILE *fp = fopen("deliveries.txt", "r");
+    if (fp == NULL) return;
+    fscanf(fp, "%d", &num_deliveries);
+    for (int i = 0; i < num_deliveries; i++) {
+        fscanf(fp, "%d %d %d %d %f %f %f %f %f %f %f %f",
+               &deliveries[i].source, &deliveries[i].dest, &deliveries[i].weight, &deliveries[i].vehicle_type,
+               &deliveries[i].min_distance, &deliveries[i].delivery_cost, &deliveries[i].fuel_used, &deliveries[i].fuel_cost,
+               &deliveries[i].total_cost, &deliveries[i].profit, &deliveries[i].customer_charge, &deliveries[i].time);
+    }
+    fclose(fp);
+}
+
+void save_deliveries() {
+    FILE *fp = fopen("deliveries.txt", "w");
+    if (fp == NULL) {
+        printf("Error saving deliveries.\n");
+        return;
+    }
+    fprintf(fp, "%d\n", num_deliveries);
+    for (int i = 0; i < num_deliveries; i++) {
+        fprintf(fp, "%d %d %d %d %.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f\n",
+                deliveries[i].source, deliveries[i].dest, deliveries[i].weight, deliveries[i].vehicle_type,
+                deliveries[i].min_distance, deliveries[i].delivery_cost, deliveries[i].fuel_used, deliveries[i].fuel_cost,
+                deliveries[i].total_cost, deliveries[i].profit, deliveries[i].customer_charge, deliveries[i].time);
+    }
+    fclose(fp);
+    printf("Deliveries saved successfully.\n");
+}
 
