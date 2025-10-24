@@ -165,4 +165,52 @@ void save_deliveries() {
     fclose(fp);
     printf("Deliveries saved successfully.\n");
 }
+void add_city() {
+    if (num_cities >= MAX_CITIES) {
+        printf("Maximum cities reached.\n");
+        return;
+    }
+    printf("Enter city name: ");
+    char name[50];
+    fgets(name, 50, stdin);
+    name[strcspn(name, "\n")] = 0;
+    for (int i = 0; i < num_cities; i++) {
+        if (strcmp(cities[i], name) == 0) {
+            printf("City already exists.\n");
+            return;
+        }
+    }
+    strcpy(cities[num_cities], name);
+    for (int i = 0; i <= num_cities; i++) {
+        distance[num_cities][i] = (num_cities == i) ? 0 : INF;
+        distance[i][num_cities] = distance[num_cities][i];
+    }
+    num_cities++;
+    floyd_warshall();
+    printf("City added.\n");
+}
+
+void rename_city() {
+    printf("Enter current city name: ");
+    char old_name[50];
+    fgets(old_name, 50, stdin);
+    old_name[strcspn(old_name, "\n")] = 0;
+    int index = find_city_index(old_name);
+    if (index == -1) {
+        printf("City not found.\n");
+        return;
+    }
+    printf("Enter new city name: ");
+    char new_name[50];
+    fgets(new_name, 50, stdin);
+    new_name[strcspn(new_name, "\n")] = 0;
+    for (int i = 0; i < num_cities; i++) {
+        if (strcmp(cities[i], new_name) == 0) {
+            printf("New name already exists.\n");
+            return;
+        }
+    }
+    strcpy(cities[index], new_name);
+    printf("City renamed.\n");
+}
 
