@@ -10,9 +10,10 @@
 #define FUEL_PRICE 310.0
 
 int main(){
-printf("Logistics Management System\n");
+printf("Logistics Management system\n");
 return 0;
 }
+
 struct Vehicle {
     char name[10];
     int capacity;
@@ -49,4 +50,42 @@ struct Vehicle vehicles[3] = {
 
 struct Delivery deliveries[MAX_DELIVERIES];
 int num_deliveries = 0;
+
+void initialize_distances();
+void floyd_warshall();
+void load_routes();
+void save_routes();
+void load_deliveries();
+void save_deliveries();
+void add_city();
+void rename_city();
+void remove_city();
+void edit_distance();
+void display_distances();
+void delivery_request();
+void reports();
+int find_city_index(char* name);
+void display_menu();
+void city_management_menu();
+void distance_management_menu();
+void initialize_distances() {
+    for (int i = 0; i < MAX_CITIES; i++) {
+        for (int j = 0; j < MAX_CITIES; j++) {
+            distance[i][j] = (i == j) ? 0 : INF;
+        }
+    }
+}
+
+void floyd_warshall() {
+    memcpy(min_dist, distance, sizeof(distance));
+    for (int k = 0; k < num_cities; k++) {
+        for (int i = 0; i < num_cities; i++) {
+            for (int j = 0; j < num_cities; j++) {
+                if (min_dist[i][k] + min_dist[k][j] < min_dist[i][j]) {
+                    min_dist[i][j] = min_dist[i][k] + min_dist[k][j];
+                }
+            }
+        }
+    }
+}
 
