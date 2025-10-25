@@ -390,5 +390,34 @@ void delivery_request() {
     num_deliveries++;
 }
 
+void reports() {
+    if (num_deliveries == 0) {
+        printf("No deliveries completed.\n");
+        return;
+    }
+    float total_distance = 0;
+    float total_time = 0;
+    float total_revenue = 0;
+    float total_profit = 0;
+    float max_distance = 0;
+    float min_distance = FLT_MAX;
+
+    for (int i = 0; i < num_deliveries; i++) {
+        total_distance += deliveries[i].min_distance;
+        total_time += deliveries[i].time;
+        total_revenue += deliveries[i].customer_charge;
+        total_profit += deliveries[i].profit;
+        if (deliveries[i].min_distance > max_distance) max_distance = deliveries[i].min_distance;
+        if (deliveries[i].min_distance < min_distance) min_distance = deliveries[i].min_distance;
+    }
+    float avg_time = total_time / num_deliveries;
+
+    printf("Performance Reports:\n");
+    printf("a. Total Deliveries Completed: %d\n", num_deliveries);
+    printf("b. Total Distance Covered: %.2f km\n", total_distance);
+    printf("c. Average Delivery Time: %.2f hours\n", avg_time);
+    printf("d. Total Revenue: %.2f LKR, Total Profit: %.2f LKR\n", total_revenue, total_profit);
+    printf("e. Longest Route: %.2f km, Shortest Route: %.2f km\n", max_distance, min_distance);
+}
 
 
