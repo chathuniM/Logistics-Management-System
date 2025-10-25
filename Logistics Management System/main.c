@@ -294,4 +294,67 @@ void display_distances() {
     }
 }
 
+void delivery_request() {
+    if (num_deliveries >= MAX_DELIVERIES) {
+        printf("Maximum deliveries reached.\n");
+        return;
+    }
+    printf("Enter source city name: ");
+    char src[50];
+    fgets(src, 50, stdin);
+    src[strcspn(src, "\n")] = 0;
+    int source = find_city_index(src);
+    if (source == -1) {
+        printf("Source city not found.\n");
+        return;
+    }
+    printf("Enter destination city name: ");
+    char dest[50];
+    fgets(dest, 50, stdin);
+    dest[strcspn(dest, "\n")] = 0;
+    int destination = find_city_index(dest);
+    if (destination == -1) {
+        printf("Destination city not found.\n");
+        return;
+    }
+    if (source == destination) {
+        printf("Source and destination cannot be the same.\n");
+        return;
+    }
+    printf("Enter weight (kg): ");
+    int weight;
+    scanf("%d", &weight);
+    getchar();
+    printf("Select vehicle type (1=Van, 2=Truck, 3=Lorry): ");
+    int v_type;
+    scanf("%d", &v_type);
+    getchar();
+    if (v_type < 1 || v_type > 3) {
+        printf("Invalid vehicle type.\n");
+        return;
+    }
+    v_type--;
+    if (weight > vehicles[v_type].capacity) {
+        printf("Weight exceeds vehicle capacity.\n");
+        return;
+    }
+    float D = (float)min_dist[source][destination];
+    if (D >= INF) {
+        printf("No path available.\n");
+        return;
+    }
+    float R = (float)vehicles[v_type].rate_per_km;
+    float S = (float)vehicles[v_type].avg_speed;
+    float E = (float)vehicles[v_type].fuel_eff;
+    float W = (float)weight;
+
+    float delivery_cost = D * R * (1 + W / 10000);
+    float time = D / S;
+    float fuel_used = D / E;
+    float fuel_cost = fuel_used * FUEL_PRICE;
+    float total_cost = delivery_cost + fuel_cost;
+    float profit = delivery_cost * 0.25;
+    float customer_charge = total_cost + profit;
+
+
 
