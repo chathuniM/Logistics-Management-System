@@ -420,4 +420,35 @@ void reports() {
     printf("e. Longest Route: %.2f km, Shortest Route: %.2f km\n", max_distance, min_distance);
 }
 
+void display_menu() {
+    printf("\nLogistics Management System\n");
+    printf("1. City Management\n");
+    printf("2. Distance Management\n");
+    printf("3. Delivery Request\n");
+    printf("4. Reports\n");
+    printf("5. Exit\n");
+    printf("Enter choice: ");
+}
+
+void city_management_menu() {
+    int choice;
+    do {
+        printf("\nCity Management\n");
+        printf("1. Add a new city\n");
+        printf("2. Rename a city\n");
+        printf("3. Remove a city\n");
+        printf("4. Back\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+        getchar();
+        switch (choice) {
+            case 1: add_city(); break;
+            case 2: rename_city(); break;
+            case 3: remove_city(); break;
+            case 4: break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 4);
+}
+
 
