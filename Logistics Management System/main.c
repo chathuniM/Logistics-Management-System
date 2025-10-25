@@ -356,5 +356,39 @@ void delivery_request() {
     float profit = delivery_cost * 0.25;
     float customer_charge = total_cost + profit;
 
+    printf("======================================================\n");
+    printf("DELIVERY COST ESTIMATION\n");
+    printf("------------------------------------------------------\n");
+    printf("From: %s\n", cities[source]);
+    printf("To: %s\n", cities[destination]);
+    printf("Minimum Distance: %.0f km\n", D);
+    printf("Vehicle: %s\n", vehicles[v_type].name);
+    printf("Weight: %d kg\n", weight);
+    printf("------------------------------------------------------\n");
+    printf("Base Cost: %.0f × %d × (1 + %d/10000) = %.2f LKR\n", D, vehicles[v_type].rate_per_km, weight, delivery_cost);
+    printf("Fuel Used: %.2f L\n", fuel_used);
+    printf("Fuel Cost: %.2f LKR\n", fuel_cost);
+    printf("Operational Cost: %.2f LKR\n", total_cost);
+    printf("Profit: %.2f LKR\n", profit);
+    printf("Customer Charge: %.2f LKR\n", customer_charge);
+    printf("Estimated Time: %.2f hours\n", time);
+    printf("======================================================\n");
+
+
+    deliveries[num_deliveries].source = source;
+    deliveries[num_deliveries].dest = destination;
+    deliveries[num_deliveries].weight = weight;
+    deliveries[num_deliveries].vehicle_type = v_type;
+    deliveries[num_deliveries].min_distance = D;
+    deliveries[num_deliveries].delivery_cost = delivery_cost;
+    deliveries[num_deliveries].fuel_used = fuel_used;
+    deliveries[num_deliveries].fuel_cost = fuel_cost;
+    deliveries[num_deliveries].total_cost = total_cost;
+    deliveries[num_deliveries].profit = profit;
+    deliveries[num_deliveries].customer_charge = customer_charge;
+    deliveries[num_deliveries].time = time;
+    num_deliveries++;
+}
+
 
 
