@@ -9,10 +9,6 @@
 #define INF 999999
 #define FUEL_PRICE 310.0
 
-int main(){
-printf("Logistics Management system\n");
-return 0;
-}
 
 struct Vehicle {
     char name[10];
@@ -38,6 +34,7 @@ struct Delivery {
     float time;
 };
 
+
 char cities[MAX_CITIES][50];
 int num_cities = 0;
 int distance[MAX_CITIES][MAX_CITIES];
@@ -50,6 +47,7 @@ struct Vehicle vehicles[3] = {
 
 struct Delivery deliveries[MAX_DELIVERIES];
 int num_deliveries = 0;
+
 
 void initialize_distances();
 void floyd_warshall();
@@ -68,6 +66,43 @@ int find_city_index(char* name);
 void display_menu();
 void city_management_menu();
 void distance_management_menu();
+
+int main() {
+    load_routes();
+    load_deliveries();
+    floyd_warshall();
+
+    int choice;
+    do {
+        display_menu();
+        scanf("%d", &choice);
+        getchar();
+        switch (choice) {
+            case 1:
+                city_management_menu();
+                break;
+            case 2:
+                distance_management_menu();
+                break;
+            case 3:
+                delivery_request();
+                break;
+            case 4:
+                reports();
+                break;
+            case 5:
+                save_routes();
+                save_deliveries();
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
 void initialize_distances() {
     for (int i = 0; i < MAX_CITIES; i++) {
         for (int j = 0; j < MAX_CITIES; j++) {
@@ -88,6 +123,7 @@ void floyd_warshall() {
         }
     }
 }
+
 void load_routes() {
     FILE *fp = fopen("routes.txt", "r");
     if (fp == NULL) {
@@ -136,6 +172,7 @@ void save_routes() {
     fclose(fp);
     printf("Routes saved successfully.\n");
 }
+
 void load_deliveries() {
     FILE *fp = fopen("deliveries.txt", "r");
     if (fp == NULL) return;
@@ -165,6 +202,7 @@ void save_deliveries() {
     fclose(fp);
     printf("Deliveries saved successfully.\n");
 }
+
 void add_city() {
     if (num_cities >= MAX_CITIES) {
         printf("Maximum cities reached.\n");
@@ -213,6 +251,7 @@ void rename_city() {
     strcpy(cities[index], new_name);
     printf("City renamed.\n");
 }
+
 void remove_city() {
     printf("Enter city name to remove: ");
     char name[50];
@@ -241,6 +280,7 @@ int find_city_index(char* name) {
     }
     return -1;
 }
+
 void edit_distance() {
     printf("Enter source city name: ");
     char src[50];
@@ -356,6 +396,7 @@ void delivery_request() {
     float profit = delivery_cost * 0.25;
     float customer_charge = total_cost + profit;
 
+
     printf("======================================================\n");
     printf("DELIVERY COST ESTIMATION\n");
     printf("------------------------------------------------------\n");
@@ -451,4 +492,21 @@ void city_management_menu() {
     } while (choice != 4);
 }
 
-
+void distance_management_menu() {
+    int choice;
+    do {
+        printf("\nDistance Management\n");
+        printf("1. Input or edit distances\n");
+        printf("2. Display distance table\n");
+        printf("3. Back\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+        getchar();
+        switch (choice) {
+            case 1: edit_distance(); break;
+            case 2: display_distances(); break;
+            case 3: break;
+            default: printf("Invalid choice.\n");
+        }
+    } while (choice != 3);
+}
