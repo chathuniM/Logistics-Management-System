@@ -241,5 +241,57 @@ int find_city_index(char* name) {
     }
     return -1;
 }
+void edit_distance() {
+    printf("Enter source city name: ");
+    char src[50];
+    fgets(src, 50, stdin);
+    src[strcspn(src, "\n")] = 0;
+    int i = find_city_index(src);
+    if (i == -1) {
+        printf("Source city not found.\n");
+        return;
+    }
+    printf("Enter destination city name: ");
+    char dest[50];
+    fgets(dest, 50, stdin);
+    dest[strcspn(dest, "\n")] = 0;
+    int j = find_city_index(dest);
+    if (j == -1) {
+        printf("Destination city not found.\n");
+        return;
+    }
+    if (i == j) {
+        printf("Cannot set distance to itself.\n");
+        return;
+    }
+    printf("Enter distance (km): ");
+    int d;
+    scanf("%d", &d);
+    getchar();
+    distance[i][j] = d;
+    distance[j][i] = d;
+    floyd_warshall();
+    printf("Distance updated.\n");
+}
+
+void display_distances() {
+    printf("Distance Table:\n");
+    printf("%-15s", " ");
+    for (int i = 0; i < num_cities; i++) {
+        printf("%-15s", cities[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < num_cities; i++) {
+        printf("%-15s", cities[i]);
+        for (int j = 0; j < num_cities; j++) {
+            if (distance[i][j] == INF) {
+                printf("%-15s", "-");
+            } else {
+                printf("%-15d", distance[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
 
 
